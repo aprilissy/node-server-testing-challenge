@@ -32,7 +32,7 @@ describe('endpoints', () => {
       const res = await request(router).delete('/doggos/1');
       expect(res.body).toMatchObject(Peanuts);
     });
-    it('responds with 400 code when id is invalid', async () => {
+    it('responds with 404 code when id is invalid', async () => {
       const res = await request(router).delete('/doggos/1');
       expect(res.status).toBe(404);
     });
