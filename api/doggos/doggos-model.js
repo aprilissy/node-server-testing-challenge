@@ -2,7 +2,8 @@ const db = require('../../data/dbConfig');
 
 module.exports = {
   remove,
-  create
+  create,
+  getByID
 };
 
 function remove(id) {
@@ -14,4 +15,8 @@ function create(doggo) {
     .then(([id]) => {
       return db('doggos').where({ id }).first;
     });
+}
+
+function getByID(id) {
+  return db('doggos').where({ id }).first();
 }
