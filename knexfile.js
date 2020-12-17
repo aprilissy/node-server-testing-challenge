@@ -9,13 +9,13 @@ module.exports = {
   development: {
     ...sharedConfig,
     connection: {
-      filename: './dev.sqlite3'
+      filename: './data/doggos.db3'
     }
   },
   testing: {
     ...sharedConfig,
     connection: {
-      filename: './dev.sqlite3'
+      filename: './data/test.db3'
     }
   }
 };
