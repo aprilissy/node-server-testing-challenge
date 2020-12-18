@@ -3,7 +3,7 @@ const Doggo = require('../doggos/doggos-model');
 const realDoggo = async (req, res, next) => {
   if(!req.body) {
     res.status(400).json({ message: `Wher is my doggo?` });
-  } else if (!req.body.name || req.body.is_good_doggo) {
+  } else if (!req.body.name || !req.body.is_good_doggo) {
     res.status(400).json({ message: `missing doggo name or status` });
   } else {
     next();

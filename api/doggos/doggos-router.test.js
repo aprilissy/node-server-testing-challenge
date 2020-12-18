@@ -1,8 +1,8 @@
 const request = require('supertest');
-const router = require('./doggos-router');
+const server = require('../server');
 const db = require('../../data/dbConfig');
 
-const Peanuts = { name: 'Peanuts', is_good_doggo: true};
+const Peanuts = { name: 'Peanuts', is_good_doggo: 1};
 
 beforeAll(async () => {
   await db.migrate.rollback();
@@ -16,24 +16,28 @@ afterAll(async () => {
 });
 
 describe('endpoints', () => {
-  describe('[POST] /doggos', () => {
-    it('responds with 200 code', async () => {
-      const res = await (await request(router).post()).setEncoding(Peanuts);
-      expect(res.status).toBe(200);
+  describe('[POST] /api/doggos', () => {
+    it('responds with 201 code', async () => {
+      const res = await request(server).post('/api/doggos').send(Peanuts);
+      expect(res.status).toBe(201);
     });
     it('returns new doggo', async () => {
-      const res = await request(router).post().setEncoding(Peanuts);
+      const res = await request(server).post('/api/doggos').send(Peanuts);
       expect(res.body.id).toBe(1);
       expect(res.body.name).toBe('Peanuts');
     });
   });
-  describe('[DELETE] /doggos', () => {
+  describe('[DELETE] /api/doggos', () => {
     it('responds with deleted doggo', async () => {
-      const res = await request(router).delete('/doggos/1');
-      expect(res.body).toMatchObject(Peanuts);
-    });
+      await db('doggos').insert(Peanuts);
+      const res = await request(server).delete('/api/doggos/1');  
+      console.log('res.body',res.body.message.name);
+      console.log('Peanuts',Peanuts);
+      
+      expect(res.body.message.name).toBe('Peanuts');
+    }); 
     it('responds with 404 code when id is invalid', async () => {
-      const res = await request(router).delete('/doggos/1');
+      const res = await request(server).delete('/api/doggos/1');
       expect(res.status).toBe(404);
     });
   });

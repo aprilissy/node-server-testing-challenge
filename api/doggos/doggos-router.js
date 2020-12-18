@@ -4,11 +4,13 @@ const router = express.Router();
 const Doggo = require('./doggos-model');
 const { realDoggo, validateId } = require('../middleware/middleware');
 
-router.post('/', realDoggo, async (req, res) => {
+router.post('/', realDoggo, async (req, res) => {  
   try{
     const doggo = req.body;
-    const magic = Doggo.create(doggo);
-    res.json(magic);
+    const magic = await Doggo.create(doggo);    
+    res.status(201).json(magic);
+    console.log('res.status',res.status);
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
